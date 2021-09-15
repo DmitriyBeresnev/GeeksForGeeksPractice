@@ -1,6 +1,6 @@
 
 
-# GeeksForGeeks Practice. Problem of the Day. September. Day 15
+# GeeksForGeeks Practice. Problem of the Day. September. Day 16
 
 '''
 
@@ -26,7 +26,7 @@ from collections import Counter, defaultdict
 import sys
 
 
-# my solution (found in the inet)
+# my solution
 class Solution:
     pass
 
