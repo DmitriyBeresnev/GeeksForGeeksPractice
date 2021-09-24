@@ -54,6 +54,21 @@ Tree
 
 
 
+Construct Tree from given Inorder and Preorder traversals
+https://www.geeksforgeeks.org/construct-tree-from-given-inorder-and-preorder-traversal/
+
+
+I actually built the tree using inorder and preorder traversals, and then compared its postorder traversal with the given postorder array.
+
+For building the tree, we store positions of every element of inorder traversal array in a hashmap. And we go step by step through the preorder array, recursively building the tree in valid (start, end) ranges which we obtain through the hashmap.
+
+While building the tree though, there can be 2 invalid cases:
+
+1) The node does not exist in our hashmap
+
+2) The position of the node is either < start or > end
+
+
 '''
 
 
@@ -82,21 +97,110 @@ class Node:
 
 # my solution
 class Solution:
+    preIndex = 0
+    treeDataMap = dict()
+    isPossible = True
+
+    # This function mainly creates an
+    # unordered_map
+    def buldTreeMap(self, inOrderArr: List[int], nArr: int):
+        # Store indexes of all items so that we
+        # we can quickly find later
+        # unordered_map<int, int>
+        for i in range(nArr):
+            self.treeDataMap[inOrderArr[i]] = i
+
+    """
+    # Recursive function to construct binary of size
+    # len from Inorder traversal in[] and Preorder traversal
+    # pre[]. Initial values of inStrt and inEnd should be
+    # 0 and len -1. The function doesn't do any error
+    # checking for cases where inorder and preorder
+    # do not form a tree
+    """
+    def buildTree(self, inOrder: List[int], preOrder: List[int], inStrt: int, inEnd: int) -> Node:
+        if (inStrt > inEnd):
+            return None
+        if not self.isPossible:
+            return None
+        # Pick current node from Preorder traversal using preIndex and increment preIndex
+        curr = preOrder[self.preIndex]
+        self.preIndex += 1
+        tNode = Node(curr)
+        # If this node has no children then return
+        if (inStrt == inEnd):
+            return tNode
+        # Else find the index of this node in Inorder traversal
+        #inIndex = self.treeDataMap[curr]
+        inIndex = self.treeDataMap.get(curr)
+        # check if curr data exist in treeDataMap
+        if inIndex is None:
+            self.isPossible = False
+            return None
+        # check if inIndex is not out of the range
+        if inIndex < inStrt or inIndex > inEnd:
+            self.isPossible = False
+            return None
+        # Using index in Inorder traversal, construct left and right subtress
+        tNode.left = self.buildTree(inOrder, preOrder, inStrt, inIndex - 1)
+        tNode.right = self.buildTree(inOrder, preOrder, inIndex + 1, inEnd)
+        return tNode
+
+    # Function to find index of value in arr[start...end]
+    # The function assumes that value is present in inOrder[]
+    def search(self, arr: List[int], start: int, end: int, value: int) -> int:
+        for i in range(start, end + 1):
+            if arr[i] == value:
+                return i
+
+    def printInorder(self, node):
+        if node is None:
+            return
+        # first recur on left child
+        self.printInorder(node.left)
+        # then print the data of node
+        print(node.data)
+        # now recur on right child
+        self.printInorder(node.right)
+
+    def constructPostorderArr(self, root: Node, constructingPostorderArr: List[int]) -> None:
+        if root is None:
+            return None
+        self.constructPostorderArr(root.left, constructingPostorderArr)
+        self.constructPostorderArr(root.right, constructingPostorderArr)
+        constructingPostorderArr.append(root.data)
+
     def checktree(self, preorder: List[int], inorder: List[int], postorder: List[int], N: int) -> bool:
         # Your code goes here
-        pass
+        self.buldTreeMap(inorder, N)
+        root = self.buildTree(inorder, preorder, 0, len(inorder) - 1)
+        constructingPostorderArr = list()
+        if root is not None:
+            self.constructPostorderArr(root, constructingPostorderArr)
+        else:
+            return False
+        return postorder == constructingPostorderArr
 
 
 if __name__ == "__main__":
     #
     start = time.perf_counter()
     solution = Solution()
-    print(solution.maxBalls(N = 5, M = 5, a = [1, 4, 5, 6, 8], b = [2, 3, 4, 6, 9])) #
+    N = 5
+    preorder = [1, 2, 4, 5, 3]
+    inorder = [4, 2, 5, 1, 3]
+    postorder = [4, 5, 2, 3, 1]
+    print(solution.checktree(preorder=preorder, inorder=inorder, postorder=postorder, N=N)) # Yes
     end = time.perf_counter()
     print(f"test 1: {end - start:10.6f} sec")
     #
     start2 = time.perf_counter()
-    print(solution.maxSubArray(nums = [1])) #
+    N = 5
+    preorder = [16, 1, 32, 37, 25]
+    inorder = [32, 1, 37, 16, 25]
+    postorder = [32, 37, 1, 25, 16]
+    solution = Solution()
+    print(solution.checktree(preorder=preorder, inorder=inorder, postorder=postorder, N=N)) # Yes
     end2 = time.perf_counter()
     print(f"test 2: {end2 - start2:10.6f} sec")
     #
