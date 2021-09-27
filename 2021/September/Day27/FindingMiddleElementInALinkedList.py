@@ -104,6 +104,8 @@ class Solution:
     def findMid(self, head: Node) -> int:
         # Code here
         # return the value stored in the middle node
+        if head is None:
+            return -1
         slowPointer = head
         fastPointer = head
         while fastPointer and fastPointer.next:
