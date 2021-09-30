@@ -1,6 +1,6 @@
 
 
-# GeeksForGeeks Practice. Problem of the Day. September. Day 29
+# GeeksForGeeks Practice. Problem of the Day. October. Day 1
 
 '''
 
