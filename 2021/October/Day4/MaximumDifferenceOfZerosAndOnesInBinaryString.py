@@ -1,59 +1,45 @@
 
 
-# GeeksForGeeks Practice. Problem of the Day. October. Day 2. Smallest range in K lists
+# GeeksForGeeks Practice. Problem of the Day. October. Day 4. Maximum difference of zeros and ones in binary string
 
 '''
 
 
-Smallest range in K lists
-Hard Accuracy: 50.5% Submissions: 9982 Points: 8
+Maximum difference of zeros and ones in binary string
+Easy Accuracy: 51.77% Submissions: 11315 Points: 2
 
-Given K sorted lists of integers, KSortedArray[] of size N each. The task is to find the smallest range that includes at least one element from each of the K lists. If more than one such range's are found, return the first such range found.
+Given a binary string S consisting of 0s and 1s. The task is to find the maximum difference of the number of 0s and the number of 1s (number of 0s – number of 1s) in the substrings of a string.
+
+Note: In the case of all 1s, the answer will be -1.
 
 Example 1:
 
-Input:
-N = 5, K = 3
-KSortedArray[][] = {{1 3 5 7 9},
-                    {0 2 4 6 8},
-                    {2 3 5 7 11}}
-Output: 1 2
-Explanation: K = 3
-A:[1 3 5 7 9]
-B:[0 2 4 6 8]
-C:[2 3 5 7 11]
-Smallest range is formed by number 1
-present in first list and 2 is present
-in both 2nd and 3rd list.
+Input : S = "11000010001"
+Output : 6
+Explanatio: From index 2 to index 9,
+there are 7 0s and 1 1s, so number
+of 0s - number of 1s is 6.
 
 Example 2:
 
-Input:
-N = 4, K = 3
-KSortedArray[][] = {{1 2 3 4},
-                    {5 6 7 8},
-                    {9 10 11 12}}
-Output: 4 9
+Input: S = "111111"
+Output: -1
+Explanation: S contains 1s only
 
-Your Task :
+Your task:
+You do not need to read any input or print anything. The task is to complete the function maxSubstring(), which takes a string as input and returns an integer.
 
-Complete the function findSmallestRange() that receives array , array size n and k as parameters and returns the output range (as a pair in cpp and array of size 2 in java and python)
+Expected Time Complexity: O(|S|)
+Expected Auxiliary Space: O(|S|)
 
-Expected Time Complexity : O(n * k *log k)
-Expected Auxilliary Space  : O(k)
 Constraints:
-1 <= K,N <= 500
-1 <= a[ i ] <= 105
+1 ≤ |S| ≤ 105
+S contains 0s and 1s only
 
-Company Tags
-Amazon
-Flipkart
 Topic Tags
-Arrays
-Heap
-Related Courses
-Amazon SDE Test Series
-Google Test Series
+Dynamic Programming
+Kadane
+Strings
 
 
 
@@ -78,7 +64,17 @@ import sys
 
 # my solution
 class Solution:
-    pass
+    def maxSubstring(self, S: str) -> int:
+        # code here
+        res = 0
+        curSubstringCnt = 0
+        for c in S:
+            if c == "0":
+                curSubstringCnt += 1
+                res = max(res, curSubstringCnt)
+            elif curSubstringCnt > 0:
+                curSubstringCnt -= 1
+        return res if res > 0 else -1
 
 
 if __name__ == "__main__":
