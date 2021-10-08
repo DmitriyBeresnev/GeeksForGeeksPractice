@@ -1,6 +1,6 @@
 
 
-# GeeksForGeeks Practice. Problem of the Day. October. Day 3
+# GeeksForGeeks Practice. Problem of the Day. October. Day 7
 
 '''
 
